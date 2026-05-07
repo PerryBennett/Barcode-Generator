@@ -1,0 +1,204 @@
+Current issues with my app
+
+Edge Cases 
+when is a frame good 
+what if no words are held to camera 
+
+
+Camera Container fills entire space, but web cam doesn't 
+
+
+changing the approach
+
+before: try many times and hope for success
+now: wait until success conditions are true, then act once
+
+
+What to optimize first (in order) 
+
+1. Text presence detection ( most important) 
+
+dont even think about OCR unless the frame looks like text 
+
+
+
+2. Stability detection 
+
+only capture when the users stops moving 
+	"creates a smart feeling"
+
+	* can add live prompts to suggests to user 
+		too much movement 
+		out of bounds 
+		etc 
+
+3. Region Control (huge impact) 
+	only scan the center / intended area
+
+
+
+4. OCR tuning (later) 
+
+
+camera opens -> nothing happens
+user raises paper -> still nothing 
+user holds steady -> trigger fires once 
+OCR result is clean	
+
+
+i first need the conditions are good function. that is determined by is user raising paper, is readable text present ,is it steady ? 
+
+
+conditionsAregood dependencies 
+
+is user raising paper -> enough visual structure
+is text present -> frame is stable (not moving)
+is it steady -> consistent over short time (not a spike) 
+
+every real vision system does 
+detect -> validate -> process
+
+	edges, contrast, motion, stability 
+
+Text in images has a few consistent properties: 
+	high local contrast 
+	
+black/white edges, sharp transitions. 
+
+Example:
+	letters vs paper background 
+
+repeated small edges
+
+faces, walls, desks:
+	smooth gradients 
+	low edge variation 
+
+
+look into edge density
+
+tesseract behaves like
+	if i see structure that looks like text, i try harder to interpret it
+
+only want to give it frames where 
+	lots of edges 
+	structured patterns 
+	not smooth noise 
+
+
+
+Understanding getGrayScaleData() 
+
+web cam gives you color pixels:
+	we are converting RGB image -> grayscale brightness value 
+
+what is the advantage of converting RGB image to grayscale brightness value ?
+
+	text detection depends on contrast, not color
+	variance becomes meaningful only in grayscale
+
+
+Youve moved from RGBA space -> grayscale space
+	no longer care about color 
+	treat the image like a 2D grid of intensity values 
+
+	makes edge detection, thresholding, text detection much simpler
+
+
+Classical computer vision pipeline
+* 
+
+when i call .length on something in js what does that mean
+.299 * r + .587 * g + .114 * b 
+weights are not random, come from measured human visual perception 
+define perception: the sensory experience of the world, involving the organization, identification, and interpretation of sensory information (light, sound, smell, touch) to understand the environment. 
+luminance formula = how human interpret that light
+
+ctx is interacting with canvas's internal rendering engine 
+________________________________________________________________________
+
+Understanding getVariance
+Variance is a measure of how spread out values are. 
+	in my case im analyzing numbers in general - analyzing pixel brightness values in gray 
+
+[120, 121, 119, 120] -> variance is low 
+
+variables jump around -> [10,240,30,200,90] variance is high 
+
+measuring how much things change
+
+Four gray array:
+	compute the mean (average brightness) 
+	for each pixel 
+		subtract mean
+		square the result 	
+	average those squared differences 
+
+result = a single number representing overall variability
+
+significance = working with video frames converted into brightness values. 
+low variance = stable / uniform frame 
+
+
+variance = is this frame visually varied enough to be interesting
+variance = average squared distance of pixel brightness values from their mean (a measure of how spread out the image is) 
+__________________________________________________________________________
+
+Understanding isStableFrame()
+
+a function used to compare the current and previous frame 
+on the first iteration of the function call we exit, as we have no value for lastframe. 
+	key part of understanding how we work with two frames at once 
+	only on the second iteration of the func call will we have the two 	frames for comparison 
+		we take the sum of absolute differences (SAD) to analyze how much did the pixel change
+	
+		* the higher the value of diff, the more change, the less 		stable  
+
+
+
+Button click
+   ↓
+scan()
+   ↓
+camera ready
+   ↓
+startDetectionLoop()
+   ↓
+checkFrame() runs repeatedly
+   ↓
+frame comparison becomes meaningful
+_________________________________________________________________
+the rate in which i call the check frame function is very important 
+
+up until this point i was using setinterval, calling checkframe every 300 ms but that might not be sificaint and might cause undersampling 
+
+
+7. What you should do next (important)
+
+You need to recalibrate using real data:
+
+Step 1
+
+Log multiple scenes:
+
+blank wall
+desk
+screen with text
+motion
+Step 2
+
+Find ranges:
+
+Example: wall: 4200–4800
+desk: 5000–7000
+text: 7000–12000
+
+
+Static Scene:
+	lots of sharp edges 
+	stable lighting gradients
+	consistent high contrast structure
+
+Looking into the initial camera state
+	
+

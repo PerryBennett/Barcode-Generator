@@ -1,0 +1,24 @@
+Frontend (Browser): 
+Shows the camera feed, buttons, live UI  | HTML, CSS, JS 
+
+Backend (Server):
+Runs the ML model, processes images, returns predictions | Python + EasyOCR /Pytorch on EC2  
+
+
+Creating a Virtual env (before using Ec2 to save money)
+	created in my backend folder 
+
+	we know its my virtual env because of (venv) 
+	Installed all required dependencies
+	easyOCR, torch, openCV, Pillow 
+	fastapi + uvicorn? 
+
+
+
+
+You connect with Ec2 through ssh
+	- text only command line interface
+
+Once you get in Ec2
+	Create a folder
+	

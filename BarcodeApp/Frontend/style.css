@@ -1,0 +1,18 @@
+body {
+    background-color: lightblue;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    color: darkblue;
+}
+
+
+p {
+    color: gray;
+}
+
+#canvas {
+    display: none;
+}

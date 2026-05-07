@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport " content="width=device-width, initial-scale=1.0">
+    <title> Barcode App </title>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1 id="title">Barcode App</h1>
+    <p> Please Scan barcode </p>
+
+
+    <div class="container">
+        <label>Enter Barcode </label>
+        <input type="text" id="barcodeInput" placeholder="Enter the data">
+        <input type="button" id="generateBtn" onclick="generateBarcode()" value="Generate">
+    </div>
+
+    <div class="buttons">
+        <button id="Scan" class="btn"> Scan</button>
+        <button id="stopVideo" class="btn"> Stop My video</button>
+    </div>
+
+    <div class="cameraContainer">
+        <video id="video" autoplay playsinline width="400"></video>
+    </div>
+
+    <svg id="barcodeSVG" style="display:none"></svg>
+
+    <script src="camera.js" defer></script>
+
+    <canvas id="canvas" width="400" height="300"></canvas>
+
+    <script src="script.js" defer></script>
+
+</body>
+
+</html>

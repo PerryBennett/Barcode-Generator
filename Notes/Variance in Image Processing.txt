@@ -1,0 +1,45 @@
+Variance: How spread out are the values in a dataset? 
+
+Variance can be applied to any pixel-based data, not just brightness.
+Variance (Image processing): In my grayscale image, i'm looking at brightness per pixel
+
+Variance is not tied to brightness-it's tied to whatever data you feed it 
+
+Variance is a tool, not a specific technique 
+
+It can answer different questions depending on input:
+brightness -> contrast / structure
+gradients  -> edge strength
+frame diff -> motion intensity 
+regions    -> texture variation
+
+variance = spread of numbers  
+contrast = differences in brightness
+
+Structure (edges, shapes, text) creates sharp brightness changes. 
+
+Empty scene still had high variance
+	shadows
+	lighting gradients 
+	edges of objects 
+	camera noise   -> unintentional structure
+
+Creating a multi stage filtering pipeline for live video frames
+
+Spatial -> within a single frame (image)
+	what are pixels doing right now? 
+
+spatial captures (edges, contrast, texture, structure) 
+
+Temporal -> how things change across frames over time
+	previous frame vs current frame 
+	motion
+	camera shake 
+	scene change
+
+swap for edge detection 
+
+
+
+
+
